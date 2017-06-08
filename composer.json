@@ -1,0 +1,13 @@
+{
+    "name": "dmz9/insales-api",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "dmz9",
+            "email": "dmz9@yandex.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
