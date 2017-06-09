@@ -101,4 +101,9 @@ class AbstractCollection
 	{
 		return $this->getCollection();
 	}
+
+	public function isEmpty()
+	{
+		return empty($this->collection);
+	}
 }
