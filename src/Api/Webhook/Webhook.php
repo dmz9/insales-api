@@ -7,6 +7,11 @@ use InsalesApi\Api\StatusResponse;
 use InsalesApi\Exception\ApiException;
 use InsalesApi\TransportInterface;
 
+/**
+ * Class Webhook
+ *
+ * @package InsalesApi\Api\Webhook
+ */
 class Webhook extends AbstractApi
 {
 	const FORMAT_JSON = 'json';
@@ -14,53 +19,57 @@ class Webhook extends AbstractApi
 	const TOPIC_ORDERS_CREATE = 'orders/create';
 	const TOPIC_ORDERS_UPDATE = 'orders/update';
 	protected $path = 'admin/webhooks';
-
+	
+	/**
+	 * @return \InsalesApi\Api\Webhook\WebhookResponseCollection
+	 */
 	public function getList()
 	{
 		$rawResponse = $this->transport->executeRequest(
 			TransportInterface::METHOD_GET,
 			"{$this->path}.{$this->messageFormat}"
 		);
-
+		
 		return new WebhookResponseCollection(
+			$this->convert($rawResponse),
 			$rawResponse,
-			null,
-			$this->messageFormat,
 			$this->transport->getHeaders()
 		);
 	}
-
+	
 	public function get($webhookId)
 	{
 		$rawResponse = $this->transport->executeRequest(
 			TransportInterface::METHOD_GET,
 			"{$this->path}/$webhookId.{$this->messageFormat}"
 		);
+		
 		return new WebhookResponse(
+			$this->convert($rawResponse),
 			$rawResponse,
-			$webhookId,
-			$this->messageFormat,
-			$this->transport->getHeaders()
+			$this->transport->getHeaders(),
+			$webhookId
 		);
 	}
-
+	
 	public function destroy($webhookId)
 	{
 		$rawResponse = $this->transport->executeRequest(
 			TransportInterface::METHOD_DELETE,
 			"{$this->path}/$webhookId.{$this->messageFormat}"
 		);
+		
 		return new StatusResponse(
+			$this->convert($rawResponse),
 			$rawResponse,
-			$webhookId,
-			$this->messageFormat,
-			$this->transport->getHeaders()
+			$this->transport->getHeaders(),
+			$webhookId
 		);
 	}
-
+	
 	public function create($callbackUrl, $topic, $format = self::FORMAT_JSON)
 	{
-
+		
 		if (!in_array(
 			$topic,
 			array(
@@ -88,24 +97,24 @@ class Webhook extends AbstractApi
 			)) {
 			throw new ApiException('Callback url should be full url address starting with `http...` !');
 		}
-
+		
 		$payload = array(
 			'address' => $callbackUrl,
 			'topic'   => $topic,
 			'format'  => $format
 		);
-
+		
 		$rawResponse = $this->transport->executeRequest(
 			TransportInterface::METHOD_POST,
 			"{$this->path}.{$this->messageFormat}",
 			$payload
 		);
-
+		
 		return new WebhookResponse(
+			$this->convert($rawResponse),
 			$rawResponse,
-			$payload,
-			$this->messageFormat,
-			$this->transport->getHeaders()
+			$this->transport->getHeaders(),
+			$payload
 		);
 	}
 }

@@ -1,34 +1,34 @@
 <?php
 
 namespace InsalesApi\Api;
+
+use InsalesApi\Builder;
+
 abstract class AbstractResponse
 {
 	protected $originData = null;
 	protected $unknownProperties = array();
 	protected $request = null;
 	protected $headers = array();
-
-	public function __construct($decoded)
+	
+	public function __construct(array $decodedResponse, $originResponse, $headers, $request = null)
 	{
-		$static = get_called_class();
-		foreach ($decoded as $key => $value) {
-			$method = 'set' . ucfirst($key);
-			if (method_exists(
-				$static,
-				$method
-			)) {
-				$this->$method($value);
-			} else if (property_exists(
-				$static,
-				$key
-			)) {
-				$this->{$key} = $value;
-			} else {
-				$this->unknownProperties[$key] = $value;
-			}
-		}
+		
+		$this->originData = $originResponse;
+		$this->headers    = $headers;
+		$this->request    = $request;
+		
+		Builder::populate(
+			$this,
+			$decodedResponse
+		);
 	}
-
+	
+	public static function fqcn()
+	{
+		return get_called_class();
+	}
+	
 	/**
 	 * @return array
 	 */
@@ -36,17 +36,7 @@ abstract class AbstractResponse
 	{
 		return $this->headers;
 	}
-
-	/**
-	 * @param array $headers
-	 * @return AbstractResponse
-	 */
-	public function setHeaders($headers)
-	{
-		$this->headers = $headers;
-		return $this;
-	}
-
+	
 	/**
 	 * @return null
 	 */
@@ -54,17 +44,7 @@ abstract class AbstractResponse
 	{
 		return $this->request;
 	}
-
-	/**
-	 * @param null $request
-	 * @return AbstractResponse
-	 */
-	public function setRequest($request)
-	{
-		$this->request = $request;
-		return $this;
-	}
-
+	
 	/**
 	 * @return mixed
 	 */
@@ -72,17 +52,7 @@ abstract class AbstractResponse
 	{
 		return $this->originData;
 	}
-
-	/**
-	 * @param mixed $originData
-	 * @return AbstractResponse
-	 */
-	public function setOriginData($originData)
-	{
-		$this->originData = $originData;
-		return $this;
-	}
-
+	
 	/**
 	 * @return array
 	 */

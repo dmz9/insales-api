@@ -3,105 +3,55 @@
 namespace InsalesApi\Api;
 
 use InsalesApi\Exception\SDKException;
+use InsalesApi\Helper;
 
 class AbstractCollection
 {
 	protected $collection = array();
-	protected $originData = null;
+	protected $originResponse = null;
 	protected $request = null;
 	protected $headers = array();
-	protected $itemClass = '';
-
-	public function __construct()
+	/**
+	 * @var callable
+	 */
+	protected $itemClass;
+	
+	public function __construct(array $decodedResponse, $originResponse, $headers, $request = null)
 	{
+		
 		if (empty($this->itemClass)) {
 			throw new SDKException("Collection must have item classname");
+		} else if (!class_exists($this->itemClass)) {
+			throw new SDKException("Class {$this->itemClass} not found");
+		} else if (!is_subclass_of(
+			$this->itemClass,
+			AbstractResponse::fqcn()
+		)) {
+			throw new SDKException("Class {$this->itemClass} must extend AbstractResponse");
+		} else if (Helper::isAssociativeArray($decodedResponse)) {
+			throw new SDKException("Data is associative array, numeric array expected");
+		}
+		
+		$this->originResponse = $originResponse;
+		$this->headers        = $headers;
+		$this->request        = $request;
+		
+		foreach ($decodedResponse as $itemData) {
+			$this->collection[] = new $this->itemClass($itemData);
 		}
 	}
-
-	public function getItemClass()
-	{
-		return $this->itemClass;
-	}
-
+	
 	/**
 	 * @return array
 	 */
-	public function getCollection()
+	public function all()
 	{
 		return $this->collection;
 	}
-
-	public function add(AbstractResponse $instance)
-	{
-		if (!($instance instanceof $this->itemClass)) {
-			throw new SDKException(
-				"Instance class mismatch, given " . get_class($instance) . ", expected {$this->itemClass}"
-			);
-		}
-		$this->collection[] = $instance;
-		return $this;
-	}
-
+	
 	/**
-	 * @return null
+	 * @return bool
 	 */
-	public function getRequest()
-	{
-		return $this->request;
-	}
-
-	/**
-	 * @param null $request
-	 * @return AbstractCollection
-	 */
-	public function setRequest($request)
-	{
-		$this->request = $request;
-		return $this;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getHeaders()
-	{
-		return $this->headers;
-	}
-
-	/**
-	 * @param array $headers
-	 * @return AbstractCollection
-	 */
-	public function setHeaders($headers)
-	{
-		$this->headers = $headers;
-		return $this;
-	}
-
-	/**
-	 * @return null
-	 */
-	public function getOriginData()
-	{
-		return $this->originData;
-	}
-
-	/**
-	 * @param null $originData
-	 * @return AbstractCollection
-	 */
-	public function setOriginData($originData)
-	{
-		$this->originData = $originData;
-		return $this;
-	}
-
-	public function all()
-	{
-		return $this->getCollection();
-	}
-
 	public function isEmpty()
 	{
 		return empty($this->collection);
