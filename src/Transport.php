@@ -106,7 +106,9 @@ class Transport implements TransportInterface
 	}
 	
 	/**
-	 * @return array
+	 * @param null $which
+	 *
+	 * @return array|mixed|null
 	 */
 	public function getResponseHeaders($which = null)
 	{
