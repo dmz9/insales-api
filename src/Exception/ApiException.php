@@ -49,6 +49,20 @@ class ApiException extends \Exception
 		return $this;
 	}
 	
+	/**
+	 * @param $response
+	 *
+	 * @return $this
+	 */
+	public function setResponse($response)
+	{
+		$this->_debug['response'] = $response;
+		return $this;
+	}
+	
+	/**
+	 * @return array
+	 */
 	public function getDebugData()
 	{
 		return $this->_debug;

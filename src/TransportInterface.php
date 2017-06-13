@@ -15,7 +15,7 @@ interface TransportInterface
 	/**
 	 * @return array
 	 */
-	public function getResponseHeaders($which=null);
+	public function getResponseHeaders($which = null);
 	
 	public function getHttpCode();
 	
@@ -24,6 +24,8 @@ interface TransportInterface
 	public function getRequestPath();
 	
 	public function getRequestMethod();
+	
+	public function getRequestPayload();
 	
 	public function get($path);
 	

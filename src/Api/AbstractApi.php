@@ -110,7 +110,9 @@ class AbstractApi
 			}
 			$exception->setResponseHeaders($this->transport->getResponseHeaders())
 			          ->setMethod($this->transport->getRequestMethod())
-			          ->setPath($this->transport->getRequestPath());
+			          ->setPath($this->transport->getRequestPath())
+			          ->setPayload($this->transport->getRequestPayload())
+			          ->setResponse($this->transport->getResponseBody());
 			throw $exception;
 		}
 	}

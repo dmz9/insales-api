@@ -75,8 +75,9 @@ class Transport implements TransportInterface
 		);
 		
 		$this->last = array(
-			'path'   => $path,
-			'method' => $method
+			'path'        => $path,
+			'method'      => $method,
+			'requestPayload' => $payload
 		);
 		
 		$ch = $this->_configureCurl(
@@ -112,9 +113,9 @@ class Transport implements TransportInterface
 	 */
 	public function getResponseHeaders($which = null)
 	{
-		if(is_null($which)){
+		if (is_null($which)) {
 			return $this->responseHeaders;
-		}else if(isset($this->responseHeaders[$which])){
+		} else if (isset($this->responseHeaders[$which])) {
 			return $this->responseHeaders[$which];
 		}
 		return null;
@@ -168,6 +169,11 @@ class Transport implements TransportInterface
 	public function getRequestMethod()
 	{
 		return $this->last['method'];
+	}
+	
+	public function getRequestPayload()
+	{
+		return $this->last['requestPayload'];
 	}
 	
 	private function _curlDefaults()
