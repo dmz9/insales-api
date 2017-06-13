@@ -2,7 +2,9 @@
 
 namespace InsalesApi\Api;
 
+use InsalesApi\Exception\NotFoundException;
 use InsalesApi\Exception\SDKException;
+use InsalesApi\Exception\UsageLimitException;
 use InsalesApi\Helper;
 use InsalesApi\InsalesAPI;
 use InsalesApi\TransportInterface;
@@ -32,7 +34,7 @@ class AbstractApi
 			throw new SDKException('Define API path before constructing client instance!');
 		}
 		
-		$this->transport     = $transport;
+		$this->transport = $transport;
 		$this->messageFormat = $messageFormat;
 	}
 	
@@ -82,5 +84,26 @@ class AbstractApi
 			return $xml->asXML();
 		}
 		throw new SDKException("Unknown message format {$this->messageFormat}");
+	}
+	
+	protected function expectHttpCode($expected = 200)
+	{
+		$actual = $this->transport->getHttpCode();
+		if ($actual != $expected) {
+			switch ($actual) {
+				case 404:
+					$exception = new NotFoundException(
+						"Wrong URI or resource not found in URI: `{$this->transport->getRequestPath()}` !"
+					);
+					$exception->setResponseHeaders($this->transport->getResponseHeaders());
+					break;
+				case 503:
+					$exception = new UsageLimitException("API usage limit exceed");
+					break;
+				default:
+					$exception = new SDKException("Unexpected http code returned: $actual");
+			}
+			throw $exception;
+		}
 	}
 }

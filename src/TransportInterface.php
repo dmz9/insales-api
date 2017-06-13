@@ -21,6 +21,8 @@ interface TransportInterface
 	
 	public function getResponseBody();
 	
+	public function getRequestPath();
+	
 	public function get($path);
 	
 	public function post($path, $payload = null);

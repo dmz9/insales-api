@@ -20,6 +20,8 @@ class PaymentGateway extends AbstractApi
 			$prepared
 		);
 		
+		$this->expectHttpCode(201);
+		
 		return new PaymentGatewayResponse(
 			$this->convert($rawResponse),
 			$rawResponse,
@@ -45,6 +47,8 @@ class PaymentGateway extends AbstractApi
 			$prepared
 		);
 		
+		$this->expectHttpCode(201);
+		
 		return new PaymentGatewayExternalResponse(
 			$this->convert($rawResponse),
 			$rawResponse,
@@ -58,6 +62,8 @@ class PaymentGateway extends AbstractApi
 		$this->transport->delete(
 			"$this->path/$paymentGatewayId.$this->messageFormat"
 		);
+		
+		$this->expectHttpCode();
 		
 		return null;
 	}
@@ -79,6 +85,8 @@ class PaymentGateway extends AbstractApi
 			);
 		}
 		
+		$this->expectHttpCode(201);
+		
 		return new PaymentGatewayResponse(
 			$decoded,
 			$rawResponse,
@@ -93,6 +101,8 @@ class PaymentGateway extends AbstractApi
 		$rawResponse = $this->transport->get(
 			"$this->path.$this->messageFormat"
 		);
+		
+		$this->expectHttpCode(201);
 		
 		return new PaymentGatewayResponseCollection(
 			$this->convert($rawResponse),

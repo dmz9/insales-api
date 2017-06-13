@@ -26,6 +26,8 @@ class Webhook extends AbstractApi
 	{
 		$rawResponse = $this->transport->get("{$this->path}.{$this->messageFormat}");
 		
+		$this->expectHttpCode();
+		
 		return new WebhookResponseCollection(
 			$this->convert($rawResponse),
 			$rawResponse,
@@ -38,6 +40,8 @@ class Webhook extends AbstractApi
 		$rawResponse = $this->transport->get(
 			"{$this->path}/$webhookId.{$this->messageFormat}"
 		);
+		
+		$this->expectHttpCode();
 		
 		return new WebhookResponse(
 			$this->convert($rawResponse),
@@ -52,6 +56,8 @@ class Webhook extends AbstractApi
 		$rawResponse = $this->transport->delete(
 			"{$this->path}/$webhookId.{$this->messageFormat}"
 		);
+		
+		$this->expectHttpCode();
 		
 		return new StatusResponse(
 			$this->convert($rawResponse),
@@ -105,6 +111,8 @@ class Webhook extends AbstractApi
 				'webhook'
 			)
 		);
+		
+		$this->expectHttpCode(201);
 		
 		return new WebhookResponse(
 			$this->convert($rawResponse),

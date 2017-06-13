@@ -11,6 +11,7 @@ class Transport implements TransportInterface
 	protected $requestHeaders = array();
 	protected $httpCode;
 	protected $responseBody;
+	protected $last = array();
 	/**
 	 * @var int timeout in seconds for request
 	 */
@@ -71,6 +72,11 @@ class Transport implements TransportInterface
 		
 		$this->_checkArgs(
 			$method
+		);
+		
+		$this->last = array(
+			'path'   => $path,
+			'method' => $method
 		);
 		
 		$ch = $this->_configureCurl(
@@ -145,6 +151,11 @@ class Transport implements TransportInterface
 	public function setHeaders(array $headers)
 	{
 		return $this->setRequestHeaders($headers);
+	}
+	
+	public function getRequestPath()
+	{
+		return $this->last['path'];
 	}
 	
 	private function _curlDefaults()
@@ -235,7 +246,7 @@ class Transport implements TransportInterface
 				}
 			}
 		}
-
+		
 		return $result;
 	}
 }
