@@ -6,6 +6,7 @@ use InsalesApi\Exception\ApiException;
 use InsalesApi\Exception\NotFoundException;
 use InsalesApi\Exception\SDKException;
 use InsalesApi\Exception\UnathorizedException;
+use InsalesApi\Exception\UnprocessableEntityException;
 use InsalesApi\Exception\UsageLimitException;
 use InsalesApi\Helper;
 use InsalesApi\InsalesAPI;
@@ -100,6 +101,9 @@ class AbstractApi
 					$exception = new NotFoundException(
 						"Wrong URI or resource not found in URI: `{$this->transport->getRequestPath()}` !"
 					);
+					break;
+				case 422:
+					$exception = new UnprocessableEntityException("Unable to process: {$this->transport->getResponseBody()}");
 					break;
 				case 503:
 					$exception = new UsageLimitException("API usage limit exceed");
