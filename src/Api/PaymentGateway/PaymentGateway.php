@@ -12,7 +12,7 @@ class PaymentGateway extends AbstractApi
 	{
 		$prepared = $this->prepare(
 			$request->asArray(),
-			'payment-gateway'
+			'payment_gateway'
 		);
 		
 		$rawResponse = $this->transport->post(
@@ -39,7 +39,7 @@ class PaymentGateway extends AbstractApi
 	{
 		$prepared = $this->prepare(
 			$request->asArray(),
-			'payment-gateway'
+			'payment_gateway'
 		);
 		
 		$rawResponse = $this->transport->post(
