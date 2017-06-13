@@ -22,7 +22,7 @@ class PaymentGatewayRequest extends AbstractRequest
 	/**
 	 * @param mixed $title
 	 *
-	 * @return PaymentGatewayRequest
+	 * @return $this
 	 */
 	public function setTitle($title)
 	{
@@ -33,7 +33,7 @@ class PaymentGatewayRequest extends AbstractRequest
 	/**
 	 * @param mixed $margin
 	 *
-	 * @return PaymentGatewayRequest
+	 * @return $this
 	 */
 	public function setMargin($margin)
 	{
@@ -44,7 +44,7 @@ class PaymentGatewayRequest extends AbstractRequest
 	/**
 	 * @param mixed $position
 	 *
-	 * @return PaymentGatewayRequest
+	 * @return $this
 	 */
 	public function setPosition($position)
 	{
@@ -70,7 +70,7 @@ class PaymentGatewayRequest extends AbstractRequest
 	/**
 	 * @param mixed $description
 	 *
-	 * @return PaymentGatewayRequest
+	 * @return $this
 	 */
 	public function setDescription($description)
 	{
