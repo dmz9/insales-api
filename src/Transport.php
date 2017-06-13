@@ -214,7 +214,6 @@ class Transport implements TransportInterface
 	private function _parseHeaders($headers)
 	{
 		$result = array();
-		
 		if (strlen($headers) > 0
 		    && strpos(
 			       $headers,
@@ -224,14 +223,19 @@ class Transport implements TransportInterface
 				"\n",
 				$headers
 			);
-			foreach ($headers as $header) {
-				$xploded                   = explode(
-					':',
-					$header
-				);
-				$result[trim($xploded[0])] = trim($xploded[1]);
+			foreach ($headers as $i => $header) {
+				if ($i) {
+					$xploded                   = explode(
+						':',
+						$header
+					);
+					$result[trim($xploded[0])] = trim($xploded[1]);
+				} else {
+					$result['http_code'] = $header;
+				}
 			}
 		}
+
 		return $result;
 	}
 }
