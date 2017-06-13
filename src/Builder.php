@@ -3,7 +3,7 @@
 namespace InsalesApi;
 class Builder
 {
-	public static function populate(&$object, array $data)
+	public static function populate($object, array $data)
 	{
 		foreach ($data as $key => $value) {
 			$method = 'set' . ucfirst($key);
@@ -21,5 +21,6 @@ class Builder
 				$object->unknownProperties[$key] = $value;
 			}
 		}
+		return $object;
 	}
 }

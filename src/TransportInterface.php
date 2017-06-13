@@ -7,17 +7,21 @@ interface TransportInterface
 	const METHOD_GET = 'GET';
 	const METHOD_PUT = 'PUT';
 	const METHOD_DELETE = 'DELETE';
-
-	/**
-	 * @param      $method
-	 * @param      $path
-	 * @param null $payload
-	 * @return mixed
-	 */
-	public function executeRequest($method, $path, $payload = null);
-
+	
+	public function setHeaders(array $headers);
+	
+	public function setTimeout($timeout);
+	
 	/**
 	 * @return array
 	 */
-	public function getHeaders();
+	public function getResponseHeaders();
+	
+	public function get($path);
+	
+	public function post($path, $payload = null);
+	
+	public function put($path, $payload = null);
+	
+	public function delete($path, $payload = null);
 }

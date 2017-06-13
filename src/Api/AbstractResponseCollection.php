@@ -5,7 +5,7 @@ namespace InsalesApi\Api;
 use InsalesApi\Exception\SDKException;
 use InsalesApi\Helper;
 
-class AbstractCollection
+abstract class AbstractResponseCollection
 {
 	protected $collection = array();
 	protected $originResponse = null;
@@ -37,10 +37,14 @@ class AbstractCollection
 		$this->request        = $request;
 		
 		foreach ($decodedResponse as $itemData) {
-			$this->collection[] = new $this->itemClass($itemData);
+			$this->collection[] = $this->buildItem($itemData);
 		}
 	}
 	
+	protected function buildItem($itemData)
+	{
+		return new $this->itemClass($itemData,null,null);
+	}
 	/**
 	 * @return array
 	 */

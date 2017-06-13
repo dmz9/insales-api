@@ -22,7 +22,18 @@ class Helper
 
 		return $array;
 	}
-
+	
+	public static function array2XML(\SimpleXMLElement $root, array $data)
+	{
+		foreach ($data as $key => $value) {
+			if (is_array($value)) {
+				$new_object = $root->addChild($key);
+				self::array2XML($new_object, $value);
+			} else {
+				$root->addChild($key, $value);
+			}
+		}
+	}
 	public static function isAssociativeArray($array)
 	{
 		if(!is_array($array)){

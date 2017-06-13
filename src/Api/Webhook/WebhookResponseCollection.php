@@ -2,7 +2,7 @@
 
 namespace InsalesApi\Api\Webhook;
 
-use InsalesApi\Api\AbstractCollection;
+use InsalesApi\Api\AbstractResponseCollection;
 
 /**
  * Class WebhookResponseCollection
@@ -11,14 +11,14 @@ use InsalesApi\Api\AbstractCollection;
  *
  * @method WebhookResponse[] all
  */
-class WebhookResponseCollection extends AbstractCollection
+class WebhookResponseCollection extends AbstractResponseCollection
 {
-	public function __construct($originResponse, array $decodedResponse, $headers, $request = null)
+	public function __construct(array $decodedResponse, $originResponse, $headers, $request = null)
 	{
 		$this->itemClass = __NAMESPACE__ . '\WebhookResponse';
 		parent::__construct(
-			$originResponse,
 			$decodedResponse,
+			$originResponse,
 			$headers,
 			$request = null
 		);

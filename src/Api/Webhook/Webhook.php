@@ -5,7 +5,6 @@ namespace InsalesApi\Api\Webhook;
 use InsalesApi\Api\AbstractApi;
 use InsalesApi\Api\StatusResponse;
 use InsalesApi\Exception\ApiException;
-use InsalesApi\TransportInterface;
 
 /**
  * Class Webhook
@@ -25,44 +24,39 @@ class Webhook extends AbstractApi
 	 */
 	public function getList()
 	{
-		$rawResponse = $this->transport->executeRequest(
-			TransportInterface::METHOD_GET,
-			"{$this->path}.{$this->messageFormat}"
-		);
+		$rawResponse = $this->transport->get("{$this->path}.{$this->messageFormat}");
 		
 		return new WebhookResponseCollection(
 			$this->convert($rawResponse),
 			$rawResponse,
-			$this->transport->getHeaders()
+			$this->transport->getResponseHeaders()
 		);
 	}
 	
 	public function get($webhookId)
 	{
-		$rawResponse = $this->transport->executeRequest(
-			TransportInterface::METHOD_GET,
+		$rawResponse = $this->transport->get(
 			"{$this->path}/$webhookId.{$this->messageFormat}"
 		);
 		
 		return new WebhookResponse(
 			$this->convert($rawResponse),
 			$rawResponse,
-			$this->transport->getHeaders(),
+			$this->transport->getResponseHeaders(),
 			$webhookId
 		);
 	}
 	
 	public function destroy($webhookId)
 	{
-		$rawResponse = $this->transport->executeRequest(
-			TransportInterface::METHOD_DELETE,
+		$rawResponse = $this->transport->delete(
 			"{$this->path}/$webhookId.{$this->messageFormat}"
 		);
 		
 		return new StatusResponse(
 			$this->convert($rawResponse),
 			$rawResponse,
-			$this->transport->getHeaders(),
+			$this->transport->getResponseHeaders(),
 			$webhookId
 		);
 	}
@@ -104,16 +98,18 @@ class Webhook extends AbstractApi
 			'format'  => $format
 		);
 		
-		$rawResponse = $this->transport->executeRequest(
-			TransportInterface::METHOD_POST,
+		$rawResponse = $this->transport->post(
 			"{$this->path}.{$this->messageFormat}",
-			$payload
+			$this->prepare(
+				$payload,
+				'webhook'
+			)
 		);
 		
 		return new WebhookResponse(
 			$this->convert($rawResponse),
 			$rawResponse,
-			$this->transport->getHeaders(),
+			$this->transport->getResponseHeaders(),
 			$payload
 		);
 	}
