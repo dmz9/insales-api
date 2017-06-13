@@ -34,8 +34,8 @@ class WebhookCollectionTest extends \PHPUnit\Framework\TestCase
 	public function testConstruct()
 	{
 		$collection = new \InsalesApi\Api\Webhook\WebhookResponseCollection(
-			$this->origin,
 			$this->response,
+			$this->origin,
 			$this->headers,
 			$this->request
 		);
