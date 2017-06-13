@@ -31,7 +31,10 @@ class InsalesAPI
 			)
 		)) {
 			throw new SDKException('Unsupported message format ' . $messageFormat . '! Use xml or json.');
+		} else {
+			$this->transport = $transport;
 		}
+		
 		if ($messageFormat == self::MESSAGE_FORMAT_XML) {
 			if (!class_exists('SimpleXMLElement')) {
 				throw new SDKException('XML Module not found - it is required to parse XML messages');
@@ -52,7 +55,6 @@ class InsalesAPI
 				)
 			);
 		}
-		$this->transport = $transport;
 		$this->messageFormat = $messageFormat;
 	}
 	
