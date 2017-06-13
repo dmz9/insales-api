@@ -110,11 +110,12 @@ class Transport implements TransportInterface
 	 */
 	public function getResponseHeaders($which = null)
 	{
-		return is_null($which)
-			? $this->responseHeaders
-			: isset($this->responseHeaders[$which])
-				? $this->responseHeaders[$which]
-				: null;
+		if(is_null($which)){
+			return $this->responseHeaders;
+		}else if(isset($this->responseHeaders[$which])){
+			return $this->responseHeaders[$which];
+		}
+		return null;
 	}
 	
 	public function get($path)
