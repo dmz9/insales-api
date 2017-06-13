@@ -47,4 +47,10 @@ class Helper
 				count($array) - 1
 			);
 	}
+	
+	public static function pre($var)
+	{
+		echo "<pre>".print_r($var,1)."</pre>";
+		echo "\n\r";
+	}
 }

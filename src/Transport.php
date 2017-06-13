@@ -96,7 +96,7 @@ class Transport implements TransportInterface
 		
 		curl_close($ch);
 		
-		return $this;
+		return $this->responseBody;
 	}
 	
 	/**

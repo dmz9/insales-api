@@ -32,8 +32,18 @@ class AbstractApi
 			throw new SDKException('Define API path before constructing client instance!');
 		}
 		
-		$this->transport = $transport;
+		$this->transport     = $transport;
 		$this->messageFormat = $messageFormat;
+	}
+	
+	public function getHttpCode()
+	{
+		return $this->transport->getHttpCode();
+	}
+	
+	public function getResponseHeaders()
+	{
+		return $this->transport->getResponseHeaders();
 	}
 	
 	/**
@@ -63,8 +73,8 @@ class AbstractApi
 			return json_encode(array($rootName => $data));
 		}
 		if ($this->messageFormat == InsalesAPI::MESSAGE_FORMAT_XML) {
-			$stub = '<?xml version="1.0" encoding="UTF-8"?>'."<$rootName></$rootName>";
-			$xml = new \SimpleXMLElement($stub);
+			$stub = '<?xml version="1.0" encoding="UTF-8"?>' . "<$rootName></$rootName>";
+			$xml  = new \SimpleXMLElement($stub);
 			Helper::array2XML(
 				$rootName,
 				$data

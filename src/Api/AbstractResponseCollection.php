@@ -8,14 +8,14 @@ use InsalesApi\Helper;
 abstract class AbstractResponseCollection
 {
 	protected $collection = array();
-	protected $originResponse = null;
-	protected $request = null;
+	protected $originResponse;
+	protected $request;
 	protected $headers = array();
 	/**
 	 * @var callable
 	 */
 	protected $itemClass;
-	
+
 	public function __construct(array $decodedResponse, $originResponse, $headers, $request = null)
 	{
 		
@@ -40,11 +40,31 @@ abstract class AbstractResponseCollection
 			$this->collection[] = $this->buildItem($itemData);
 		}
 	}
-	
-	protected function buildItem($itemData)
+
+	/**
+	 * @return mixed
+	 */
+	public function getOriginResponse()
 	{
-		return new $this->itemClass($itemData,null,null);
+		return $this->originResponse;
 	}
+
+	/**
+	 * @return mixed|null
+	 */
+	public function getRequest()
+	{
+		return $this->request;
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getHeaders()
+	{
+		return $this->headers;
+	}
+	
 	/**
 	 * @return array
 	 */
@@ -52,12 +72,17 @@ abstract class AbstractResponseCollection
 	{
 		return $this->collection;
 	}
-	
+
 	/**
 	 * @return bool
 	 */
 	public function isEmpty()
 	{
 		return empty($this->collection);
+	}
+	
+	protected function buildItem($itemData)
+	{
+		return new $this->itemClass($itemData,null,null);
 	}
 }

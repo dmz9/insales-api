@@ -17,6 +17,10 @@ interface TransportInterface
 	 */
 	public function getResponseHeaders();
 	
+	public function getHttpCode();
+	
+	public function getResponseBody();
+	
 	public function get($path);
 	
 	public function post($path, $payload = null);
