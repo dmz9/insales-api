@@ -15,13 +15,15 @@ interface TransportInterface
 	/**
 	 * @return array
 	 */
-	public function getResponseHeaders();
+	public function getResponseHeaders($which=null);
 	
 	public function getHttpCode();
 	
 	public function getResponseBody();
 	
 	public function getRequestPath();
+	
+	public function getRequestMethod();
 	
 	public function get($path);
 	

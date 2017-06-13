@@ -2,8 +2,10 @@
 
 namespace InsalesApi\Api;
 
+use InsalesApi\Exception\ApiException;
 use InsalesApi\Exception\NotFoundException;
 use InsalesApi\Exception\SDKException;
+use InsalesApi\Exception\UnathorizedException;
 use InsalesApi\Exception\UsageLimitException;
 use InsalesApi\Helper;
 use InsalesApi\InsalesAPI;
@@ -34,7 +36,7 @@ class AbstractApi
 			throw new SDKException('Define API path before constructing client instance!');
 		}
 		
-		$this->transport = $transport;
+		$this->transport     = $transport;
 		$this->messageFormat = $messageFormat;
 	}
 	
@@ -91,18 +93,24 @@ class AbstractApi
 		$actual = $this->transport->getHttpCode();
 		if ($actual != $expected) {
 			switch ($actual) {
+				case 401:
+					$exception = new UnathorizedException("Unathorized");
+					break;
 				case 404:
 					$exception = new NotFoundException(
 						"Wrong URI or resource not found in URI: `{$this->transport->getRequestPath()}` !"
 					);
-					$exception->setResponseHeaders($this->transport->getResponseHeaders());
 					break;
 				case 503:
 					$exception = new UsageLimitException("API usage limit exceed");
+					$exception->setExpires($this->transport->getResponseHeaders('Retry-After'));
 					break;
 				default:
-					$exception = new SDKException("Unexpected http code returned: $actual");
+					$exception = new ApiException("Unexpected http code returned: $actual");
 			}
+			$exception->setResponseHeaders($this->transport->getResponseHeaders())
+			          ->setMethod($this->transport->getRequestMethod())
+			          ->setPath($this->transport->getRequestPath());
 			throw $exception;
 		}
 	}

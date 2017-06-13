@@ -108,9 +108,13 @@ class Transport implements TransportInterface
 	/**
 	 * @return array
 	 */
-	public function getResponseHeaders()
+	public function getResponseHeaders($which = null)
 	{
-		return $this->responseHeaders;
+		return is_null($which)
+			? $this->responseHeaders
+			: isset($this->responseHeaders[$which])
+				? $this->responseHeaders[$which]
+				: null;
 	}
 	
 	public function get($path)
@@ -156,6 +160,11 @@ class Transport implements TransportInterface
 	public function getRequestPath()
 	{
 		return $this->last['path'];
+	}
+	
+	public function getRequestMethod()
+	{
+		return $this->last['method'];
 	}
 	
 	private function _curlDefaults()
