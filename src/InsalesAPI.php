@@ -2,6 +2,7 @@
 
 namespace InsalesApi;
 
+use InsalesApi\Api\PaymentGateway\PaymentGateway;
 use InsalesApi\Api\Webhook\Webhook;
 use InsalesApi\Exception\SDKException;
 
@@ -35,8 +36,23 @@ class InsalesAPI
 			if (!class_exists('SimpleXMLElement')) {
 				throw new SDKException('XML Module not found - it is required to parse XML messages');
 			}
+			$this->transport->setHeaders(
+				array(
+					'Content-Type: application/xml; charset=utf-8',
+					'Accept: application/xml',
+					"Expect:"
+				)
+			);
+		} else {
+			$this->transport->setHeaders(
+				array(
+					'Content-Type: application/json; charset=utf-8',
+					'Accept: application/json',
+					"Expect:"
+				)
+			);
 		}
-		$this->transport     = $transport;
+		$this->transport = $transport;
 		$this->messageFormat = $messageFormat;
 	}
 	
@@ -46,6 +62,17 @@ class InsalesAPI
 	public function webhook()
 	{
 		return new Webhook(
+			$this->transport,
+			$this->messageFormat
+		);
+	}
+	
+	/**
+	 * @return PaymentGateway
+	 */
+	public function paymentGateway()
+	{
+		return new PaymentGateway(
 			$this->transport,
 			$this->messageFormat
 		);
