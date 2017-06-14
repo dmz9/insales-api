@@ -85,7 +85,7 @@ class PaymentGateway extends AbstractApi
 			);
 		}
 		
-		$this->expectHttpCode(201);
+		$this->expectHttpCode();
 		
 		return new PaymentGatewayResponse(
 			$decoded,
@@ -102,7 +102,7 @@ class PaymentGateway extends AbstractApi
 			"$this->path.$this->messageFormat"
 		);
 		
-		$this->expectHttpCode(201);
+		$this->expectHttpCode();
 		
 		return new PaymentGatewayResponseCollection(
 			$this->convert($rawResponse),
