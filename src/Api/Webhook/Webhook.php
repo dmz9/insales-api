@@ -13,10 +13,11 @@ use InsalesApi\Exception\ApiException;
  */
 class Webhook extends AbstractApi
 {
-	const FORMAT_JSON = 'json';
-	const FORMAT_XML = 'xml';
+	const FORMAT_JSON = 1;
+	const FORMAT_XML = 0;
 	const TOPIC_ORDERS_CREATE = 'orders/create';
 	const TOPIC_ORDERS_UPDATE = 'orders/update';
+	const TOPIC_ORDERS_DESTROY = 'orders/destroy';
 	protected $path = 'admin/webhooks';
 	
 	/**
@@ -67,14 +68,18 @@ class Webhook extends AbstractApi
 		);
 	}
 	
-	public function create($callbackUrl, $topic, $format = self::FORMAT_JSON)
-	{
+	public function create(
+		$callbackUrl,
+		$topic,
+		$format = self::FORMAT_JSON
+	) {
 		
 		if (!in_array(
 			$topic,
 			array(
 				self::TOPIC_ORDERS_CREATE,
-				self::TOPIC_ORDERS_UPDATE
+				self::TOPIC_ORDERS_UPDATE,
+				self::TOPIC_ORDERS_DESTROY
 			)
 		)) {
 			throw new ApiException('Unknown topic for webhook');
