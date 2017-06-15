@@ -12,6 +12,9 @@ use InsalesApi\Api\AbstractResponseCollection;
  */
 class PaymentGatewayResponseCollection extends AbstractResponseCollection
 {
+
+	protected $itemClass;
+
 	public function __construct(array $decodedResponse, $originResponse, $headers, $request = null)
 	{
 		$this->itemClass = __NAMESPACE__ . '\PaymentGatewayResponse';
@@ -22,7 +25,7 @@ class PaymentGatewayResponseCollection extends AbstractResponseCollection
 			$request = null
 		);
 	}
-	
+
 	protected function buildItem($itemData)
 	{
 		if ($itemData['type'] == PaymentGatewayExternalRequest::TYPE_EXTERNAL) {

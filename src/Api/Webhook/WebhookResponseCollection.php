@@ -13,6 +13,8 @@ use InsalesApi\Api\AbstractResponseCollection;
  */
 class WebhookResponseCollection extends AbstractResponseCollection
 {
+	protected $itemClass;
+
 	public function __construct(array $decodedResponse, $originResponse, $headers, $request = null)
 	{
 		$this->itemClass = __NAMESPACE__ . '\WebhookResponse';
