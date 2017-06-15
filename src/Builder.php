@@ -6,6 +6,7 @@ class Builder
 	public static function populate($object, array $data)
 	{
 		foreach ($data as $key => $value) {
+			$key = str_replace('-','_',$key);
 			$method = 'set' . ucfirst($key);
 			if (method_exists(
 				$object,
