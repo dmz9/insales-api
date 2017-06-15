@@ -19,6 +19,9 @@ class OrderResponse extends AbstractResponse
 	 */
 	public $order_lines = array();
 	public $fields_values = array();
+	/**
+	 * @var ShippingAddress
+	 */
 	public $shipping_address;
 	public $discount;
 	public $order_changes = array();//todo implement order changes
@@ -47,6 +50,9 @@ class OrderResponse extends AbstractResponse
 	public $source_domain;
 	public $source;
 	public $fulfillment_status;
+	/**
+	 * @var CustomStatus
+	 */
 	public $custom_status;
 	public $delivered_at;
 	public $accepted_at;
