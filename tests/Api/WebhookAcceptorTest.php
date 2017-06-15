@@ -419,3 +419,5 @@ XMLLLL;
 		$this->assertEquals(null,$order->shipping_address->address);
 	}
 }
+
+
